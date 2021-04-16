@@ -22,7 +22,7 @@ sessions.post('/', (req,res) => {
 						req.session.currentUser = foundUser
 						res.send(console.log('user exists!'))
 			} else {
-				res.send(console.log('password doesn't match))
+				res.send(console.log("password doesn't match"))
 			}
 		}
 	})
