@@ -18,7 +18,7 @@ entries.get('/', (req, res)=>{
 
 
 //POST creating New Review
-entries.post('/:id', (req, res)=>{
+entries.post('/new', (req, res)=>{
     console.log('Post creating New Review working')
 
     diaryModel.create(req.body, (error, createdEntry)=>{
