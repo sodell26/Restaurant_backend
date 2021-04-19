@@ -4,7 +4,7 @@ const diaryModel = require('../models/diaryModel')
 
 // Index ----
 entries.get('/', (req, res)=>{
-    console.log('Index entries working!')
+    // console.log('Index entries working!')
 
     diaryModel.find({}, (error, foundEntries)=>{
         if(error){
@@ -19,7 +19,7 @@ entries.get('/', (req, res)=>{
 
 //POST creating New Review
 entries.post('/new', (req, res)=>{
-    console.log('Post creating New Review working')
+    // console.log('Post creating New Review working')
 
     diaryModel.create(req.body, (error, createdEntry)=>{
         if(error){
@@ -33,7 +33,7 @@ entries.post('/new', (req, res)=>{
 
 //PUT for Updating review
 entries.put('/:id', (req, res)=>{
-    console.log('PUT for updating working')
+    // console.log('PUT for updating working')
 
     diaryModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedEntry)=>{
         if(error){
@@ -50,7 +50,7 @@ entries.put('/:id', (req, res)=>{
 
 //DELETE reviews
 entries.delete('/:id', (req, res)=>{
-    console.log('Delete working')
+    // console.log('Delete working')
 
     diaryModel.findByIdAndDelete(req.params.id, (error, deletedEntry)=>{
         if(error){
