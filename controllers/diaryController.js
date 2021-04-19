@@ -60,7 +60,7 @@ entries.delete('/:id', (req, res)=>{
             res.status(404).json({message: 'Entry id not found'})
         }
         else{
-            res.status(200).json({message: `Entry ${deletedEntry.name} deleted successfully`})
+            res.status(200).json({message: `Entry ${deletedEntry.restName} deleted successfully`})
         }
     })
 })
