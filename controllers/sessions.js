@@ -35,3 +35,17 @@ sessions.delete('/', (req,res) => {
 })
 
 module.exports = sessions;
+
+// Seamus code:
+// req.session.currentUser = loginAttempt.username;
+
+//The last bit is to send some info about whether or not the user is logged from express to react . I am doing this for every endpoint that needs authentication.
+// res.status(200).json({
+// 	data: myData,
+// 	currentUser: req.session.currentUser || null
+//   })
+
+// use express-session
+// on the backend – cors  should use the "credentials" : true  config
+// on the front end – fetch requests should use the credentials: 'include' flag
+// JSON responses from the backend should send info about the currentUser attached to req.session
