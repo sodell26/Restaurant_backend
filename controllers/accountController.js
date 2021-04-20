@@ -1,37 +1,50 @@
+const bcrypt = require('bcrypt')
 const express = require('express')
 const users = express.Router()
 const userModel = require('../models/userModel')
-const bcrypt = require('bcrypt')
 
 
-//POST creating New Account
-users.post('/:id', (req, res)=>{
-    console.log('Post creating New Review working')
 
-    userModel.create(req.body, (error, createdAccount)=>{
+//POST / Sign Up Route
+users.post('/signup', (req, res)=>{
+    console.log('Post creating New Account working')
+
+    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+    userModel.create(req.body, (error, createdUser) =>{
         if(error){
             res.status(400).json({error: error.message})
-        }
-        else{
-            res.status(200).json(createdAccount)
+        } else{
+            res.status(201).json(createdUser)
         }
     })
 })
 
-// POST for creating Account Name/password 
-users.post('/', (req,res) => {
-	req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(13))
-	userModel.create(req.body, (err, createdAccount) => {
-		if (err) {
-			if(err.code === 11000) {
-			    res.status(400).json({message: 'User Already Exists'})
-			}
-		} else {
-			console.log(createdAccount)
-            res.status(200).json(createdAccount)
-		}
-	})
+// User Log In Route (Create sessions route)
+users.post('/login', (req, res) => {
+    userModel.findOne({ username: req.body.username }, (error, foundUser)=>{
+        if(error){
+            res.send(error)
+        }else{
+            if(foundUser){
+                if(bcrypt.compareSync(req.body.password, foundUser.password)) {
+                    //login user and create session
+                    req.session.currentUser = foundUser
+                    res.status(200).json(foundUser)
+                }else{
+                    res.status(404).json({ error: 'User Not Found'})
+                }
+            } else{
+                res.status(400).json({ error: error.message})
+            }
+        }
+    })
 })
 
+//Users Delete
+users.delete('/logout', (req, res)=>{
+    req.session.destroy(()=>{
+        res.status(200).json({msg: 'Users Logged Out'})
+    })
+})
 
 module.exports = users

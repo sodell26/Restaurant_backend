@@ -1,34 +1,53 @@
 const express = require('express')
 const entries = express.Router()
 const diaryModel = require('../models/diaryModel')
+const userModel = require('../models/userModel')
 
-// Index ----
+// GET (Index) ---- List of Reviews -----------
 entries.get('/', (req, res)=>{
     // console.log('Index entries working!')
 
-    diaryModel.find({}, (error, foundEntries)=>{
+    userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
         if(error){
             res.status(400).json(error)
+        }else{
+            res.status(200).json(foundUser.favReviews)
         }
-        else{
-            res.status(200).json(foundEntries)
-        }
-    })
+    }).populate('favReviews')
+
 })
 
 
 //POST creating New Review
 entries.post('/new', (req, res)=>{
-    // console.log('Post creating New Review working')
+    console.log(req.session.currentUser)
 
-    diaryModel.create(req.body, (error, createdEntry)=>{
+    diaryModel.create(req.body, (error, createHoliday)=>{
         if(error){
             res.status(400).json({error: error.message})
         }
         else{
-            res.status(200).json(createdEntry)
+
+            userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
+                if(error){
+                    res.status(400).json({ error: error.message })
+                }else{
+                    foundUser.favReviews.push(createdEntry)
+                    foundUser.save()
+                    res.status(201).json(createdEntry)
+                }
+            })
         }
     })
+    // console.log('Post creating New Review working')
+    // diaryModel.create(req.body, (error, createdEntry)=>{
+    //     if(error){
+    //         res.status(400).json({error: error.message})
+    //     }
+    //     else{
+    //         res.status(200).json(createdEntry)
+    //     }
+    // })
 })
 
 //PUT for Updating review
@@ -48,7 +67,7 @@ entries.put('/:id', (req, res)=>{
     })
 })
 
-//DELETE reviews
+//DELETE Route for reviews
 entries.delete('/:id', (req, res)=>{
     // console.log('Delete working')
 
@@ -65,7 +84,7 @@ entries.delete('/:id', (req, res)=>{
     })
 })
 
-//PATCH ROUTE increments numbers of likes
+// PATCH ROUTE increments numbers of likes
 // holidays.patch('/addlikes/:id', (req, res)=>{
 
 // 	holidaysModel.findByIdAndUpdate(req.params.id, { $inc: { likes : 1} }, {new:true}, (error, updatedHoliday)=>{

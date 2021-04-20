@@ -3,7 +3,12 @@ const {Schema, model} = mongoose
 
 const userSchema = new Schema({
 	username: {type: String, required: true},
-	password: {type: String, required: true}
+	password: {type: String, required: true} ,
+	favReviews: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Review'
+	}]
 })
 
 module.exports = model('User', userSchema)
+
