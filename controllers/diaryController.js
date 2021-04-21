@@ -22,7 +22,7 @@ entries.get('/', (req, res)=>{
 entries.post('/new', (req, res)=>{
     console.log(req.session.currentUser)
 
-    diaryModel.create(req.body, (error, createHoliday)=>{
+    diaryModel.create(req.body, (error, createdEntry)=>{
         if(error){
             res.status(400).json({error: error.message})
         }

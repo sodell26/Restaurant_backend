@@ -4,7 +4,7 @@ const sessions = express.Router();
 const User = require('../models/userModel');
 
 
-//session new route
+//session new route --> needs to be a post route
 sessions.get('/new', (req,res) => {
 	//connect w/ react
 	res.send(console.log('new session'))

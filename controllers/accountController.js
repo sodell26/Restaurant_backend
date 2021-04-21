@@ -14,7 +14,9 @@ users.post('/signup', (req, res)=>{
         if(error){
             res.status(400).json({error: error.message})
         } else{
-            res.status(201).json(createdUser)
+            const userData = createdUser.toObject()
+            delete userData.password
+            res.status(201).json(userData)
         }
     })
 })
@@ -29,6 +31,7 @@ users.post('/login', (req, res) => {
                 if(bcrypt.compareSync(req.body.password, foundUser.password)) {
                     //login user and create session
                     req.session.currentUser = foundUser
+                    //add to signup so they login when they signup
                     res.status(200).json(foundUser)
                 }else{
                     res.status(404).json({ error: 'User Not Found'})
