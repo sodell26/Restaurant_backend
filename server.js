@@ -59,7 +59,7 @@ app.use((req, res, next)=>{
 
 //controllers
 app.use('/account', require('./controllers/accountController'));
-app.use('/reviews', require('./controllers/diaryController'))
+app.use('/reviews', isAuthenticated, require('./controllers/diaryController'))
 
 app.listen(PORT, () => {
 	console.log(`Server is listening on port: ${3003}`)
