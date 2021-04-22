@@ -6,7 +6,7 @@ const userSchema = new Schema({
 	password: {type: String, required: true} ,
 	favReviews: [{
 		type: Schema.Types.ObjectId,
-		ref: 'Review'
+		ref: 'Diary'
 	}]
 })
 
