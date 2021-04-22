@@ -6,7 +6,7 @@ const userModel = require('../models/userModel')
 // GET (Index) ---- List of Reviews -----------
 entries.get('/', (req, res)=>{
     // console.log('Index entries working!')
-
+    // console.log('entry GET hit',req.session.currentUser.username)
     userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
         if(error){
             res.status(400).json(error)
