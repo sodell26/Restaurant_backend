@@ -60,9 +60,10 @@ entries.put('/:id', (req, res)=>{
         }
         else{
             res.status(200).json({
-                message: `Entry ${updatedEntry.id} updated successfully!` ,
+                message: `Entry ${updatedEntry._id} updated successfully!` ,
                 data: updatedEntry 
             })
+            console.log('update link hit', req.body)
         }
     })
 })
