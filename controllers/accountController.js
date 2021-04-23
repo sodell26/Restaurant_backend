@@ -7,27 +7,34 @@ const userModel = require('../models/userModel')
 
 //POST / Sign Up Route
 users.post('/signup', (req, res)=>{
-    console.log('Post creating New Account working')
+    // userModel.findOne({username: req.body.username}), (error, foundUser) => {
+    //         if(foundUser) {
+    //             console.log('user already exists')
+    //             res.status(409).json({error: 'User already exists'})
+        
+    //     } else {
+            console.log('Post creating New Account working')
 
-    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-    userModel.create(req.body, (error, createdUser) =>{
-        if(error){
-            if(error.code===11000){
-                res.status(409)
-                console.log("user already exists")
-            } else {
-            res.status(400).json({error: error.message})
-            }
-        } else {
-            const userData = createdUser.toObject()
-            delete userData.password
-            req.session.currentUser = createdUser
-            res.status(201).json(userData)
+            req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
+            userModel.create(req.body, (error, createdUser) =>{
 
-        }
-    })
+                if(error){
+                
+                    res.status(400).json({error: error.message})
+
+                } else {
+                    const userData = createdUser.toObject()
+                    delete userData.password
+                    req.session.currentUser = createdUser
+                    res.status(201).json(userData)
+                    console.log(createdUser)
+
+                }
+            })
+    //     }
+    // }
 })
-
+    
 // User Log In Route (Create sessions route)
 users.post('/login', (req, res) => {
     userModel.findOne({ username: req.body.username }, (error, foundUser)=>{
