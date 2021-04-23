@@ -12,8 +12,13 @@ users.post('/signup', (req, res)=>{
     req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
     userModel.create(req.body, (error, createdUser) =>{
         if(error){
+            if(error.code===11000){
+                res.status(409)
+                console.log("user already exists")
+            } else {
             res.status(400).json({error: error.message})
-        } else{
+            }
+        } else {
             const userData = createdUser.toObject()
             delete userData.password
             req.session.currentUser = createdUser
