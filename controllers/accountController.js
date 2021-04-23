@@ -7,12 +7,17 @@ const userModel = require('../models/userModel')
 
 //POST / Sign Up Route
 users.post('/signup', (req, res)=>{
-    // userModel.findOne({username: req.body.username}), (error, foundUser) => {
-    //         if(foundUser) {
-    //             console.log('user already exists')
-    //             res.status(409).json({error: 'User already exists'})
+    // console.log(req)
+    userModel.findOne({username: req.body.username}, (error, foundUser) => {
+            if(error) {
+                console.log(error)
+            }
+            console.log(foundUser)
+            if(foundUser) {
+                console.log('user already exists')
+                res.status(401).json({error: 'User already exists'})
         
-    //     } else {
+        } else {
             console.log('Post creating New Account working')
 
             req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
@@ -31,8 +36,8 @@ users.post('/signup', (req, res)=>{
 
                 }
             })
-    //     }
-    // }
+        }
+    })
 })
     
 // User Log In Route (Create sessions route)
